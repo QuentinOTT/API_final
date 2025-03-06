@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\AuteurRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Livre;
+use App\Entity\Nationalite;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\AuteurRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=AuteurRepository::class)
@@ -16,16 +18,19 @@ class Auteur
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @GROUPS{{"listAuteurFull, listAuteurSimple"}}
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @GROUPS{{"listGenreFull, listAuteurFull, listAuteurSimple"}}
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @GROUPS{{"listGenreFull, listAuteurFull, listAuteurSimple"}}
      */
     private $prenom;
 
@@ -37,6 +42,7 @@ class Auteur
 
     /**
      * @ORM\OneToMany(targetEntity=Livre::class, mappedBy="auteur")
+     * @GROUPS{{"listAuteurFull"}}
      */
     private $livres;
 

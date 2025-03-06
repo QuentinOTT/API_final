@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\NationaliteRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Auteur;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\NationaliteRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=NationaliteRepository::class)
@@ -16,11 +17,13 @@ class Nationalite
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @GROUPS{{"listAuteurFull"}}
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @GROUPS{{"listAuteurFull, listAuteurSimple"}}
      */
     private $libelle;
 
