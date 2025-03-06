@@ -21,7 +21,7 @@ class Livre
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"listGenreFull")    
+     * @Groups({"listGenreFull"})    
      */
     private $titre;
 

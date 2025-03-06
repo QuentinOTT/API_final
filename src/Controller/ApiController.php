@@ -16,11 +16,9 @@ class ApiController extends AbstractController
     public function listeRegions(SerializerInterface $serializer): Response
     {
         $mesRegions = file_get_contents('https://geo.api.gouv.fr/regions'); 
-        // $mesRegionsTab = $serializer->decode($mesRegions, 'json');
-        // $mesRegionsObjet = $serializer->denormalize($mesRegionsTab, 'App\Entity\Region[]');
+
         $mesRegions = $serializer->deserialize($mesRegions,'App\Entity\Region[]','json');
-        // dump($mesRegionsTab);
-        // die(); 
+
         return $this->render('api/index.html.twig', [
             'mesRegions' => $mesRegions
         ]);
@@ -43,7 +41,7 @@ class ApiController extends AbstractController
         }
     
             
-        $mesDeps = $serializer->decode($mesDeps,'json');
+        $mesDeps = $serializer->deserialize($mesDeps, 'array', 'json');
 
       
         return $this->render('api/listDepsParRegion.html.twig', [
