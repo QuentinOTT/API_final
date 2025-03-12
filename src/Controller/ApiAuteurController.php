@@ -35,14 +35,14 @@ class ApiAuteurController extends AbstractController
     }
 
     /**
-     * @Route("/api/auteur/{id}", name="api_auteurs_show", methods={"GET"})
+     * @Route("/api/auteurs/{id}", name="api_auteurs_show", methods={"GET"})
      */
     public function show(Auteur $auteur, SerializerInterface $serializer): Response
     { 
         $resultat=$serializer->serialize(
             $auteur,
             'json',[  
-                'groups'=>['listAuteurSmple']
+                'groups'=>['listAuteurSimple']
             ]
         );
         return new JsonResponse($resultat,Response::HTTP_OK,[],true);
@@ -75,7 +75,7 @@ class ApiAuteurController extends AbstractController
     }
 
     /**
-     * @Route("/api/auteur/{id}", name="api_auteurs_delete", methods={"DELETE"})
+     * @Route("/api/auteurs/{id}", name="api_auteurs_delete", methods={"DELETE"})
      */
     public function delete(Auteur $auteur, ObjectManager $manager)
     {
@@ -85,9 +85,9 @@ class ApiAuteurController extends AbstractController
         return new JsonResponse("l'auteur a bien été supprimé",Response::HTTP_OK,[],false);
     }
 
-    /**
-     * @Route("/api/auteur/{id}", name="api_auteurs_show", methods={"PUT"})
-     */
+   /**
+    * @Route("/api/auteurs/{id}", name="api_auteurs_edit", methods={"PUT"})
+    */
     public function edit(Auteur $auteur,Request $request, ObjectManager $manager, SerializerInterface $serializer, ValidatorInterface $validator): Response
     {
         $data=$request->getContent();

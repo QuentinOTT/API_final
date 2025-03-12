@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\EditeurRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=EditeurRepository::class)
@@ -22,7 +23,7 @@ class Editeur
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @GROUPS{{"listGenreFull, listAuteurFull"}}
+     * @Groups({"listGenreFull", "listAuteurFull"})
      */
     private $nom;
 

@@ -8,41 +8,37 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\AuteurRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 /**
  * @ORM\Entity(repositoryClass=AuteurRepository::class)
  */
 class Auteur
 {
-    /**
+/**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @GROUPS{{"listAuteurFull, listAuteurSimple"}}
+     * @Groups({"listAuteurFull", "listAuteurSimple"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @GROUPS{{"listGenreFull, listAuteurFull, listAuteurSimple"}}
+     * @Groups({"listGenreFull", "listAuteurFull", "listAuteurSimple"})
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @GROUPS{{"listGenreFull, listAuteurFull, listAuteurSimple"}}
+     * @Groups({"listGenreFull", "listAuteurFull", "listAuteurSimple"})
      */
     private $prenom;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Nationalite::class, inversedBy="auteurs")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $Relation;
-
-    /**
      * @ORM\OneToMany(targetEntity=Livre::class, mappedBy="auteur")
-     * @GROUPS{{"listAuteurFull"}}
+     * @Groups({"listAuteurFull"})
      */
     private $livres;
 
