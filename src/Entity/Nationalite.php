@@ -1,17 +1,13 @@
 <?php
-
 namespace App\Entity;
 
-use App\Entity\Auteur;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\NationaliteRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-
 /**
- * @ORM\Entity(repositoryClass=NationaliteRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\NationaliteRepository")
  */
 class Nationalite
 {
@@ -19,18 +15,18 @@ class Nationalite
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @GROUPS{{"listAuteurFull"}}
+     * @Groups({"listAuteurFull"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @GROUPS{{"listAuteurFull, listAuteurSimple"}}
+     * @Groups({"listAuteurFull", "listAuteurSimple"})
      */
     private $libelle;
 
     /**
-     * @ORM\OneToMany(targetEntity=Auteur::class, mappedBy="Relation")
+     * @ORM\OneToMany(targetEntity=Auteur::class, mappedBy="nationalite")
      */
     private $auteurs;
 
@@ -68,7 +64,7 @@ class Nationalite
     {
         if (!$this->auteurs->contains($auteur)) {
             $this->auteurs[] = $auteur;
-            $auteur->setRelation($this);
+            $auteur->setNationalite($this);
         }
 
         return $this;
@@ -78,8 +74,8 @@ class Nationalite
     {
         if ($this->auteurs->removeElement($auteur)) {
             // set the owning side to null (unless already changed)
-            if ($auteur->getRelation() === $this) {
-                $auteur->setRelation(null);
+            if ($auteur->getNationalite() === $this) {
+                $auteur->setNationalite(null);
             }
         }
 

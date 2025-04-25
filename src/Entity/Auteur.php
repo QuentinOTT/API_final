@@ -2,21 +2,17 @@
 
 namespace App\Entity;
 
-use App\Entity\Livre;
-use App\Entity\Nationalite;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\AuteurRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-
 /**
- * @ORM\Entity(repositoryClass=AuteurRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\AuteurRepository")
  */
 class Auteur
 {
-/**
+    /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -41,6 +37,13 @@ class Auteur
      * @Groups({"listAuteurFull"})
      */
     private $livres;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Nationalite::class)
+     * @ORM\JoinColumn(nullable=true)
+     * @Groups({"listAuteurFull"})
+     */
+    private $nationalite;
 
     public function __construct()
     {
@@ -76,14 +79,14 @@ class Auteur
         return $this;
     }
 
-    public function getRelation(): ?Nationalite
+    public function getNationalite(): ?Nationalite
     {
-        return $this->Relation;
+        return $this->nationalite;
     }
 
-    public function setRelation(?Nationalite $Relation): self
+    public function setNationalite(?Nationalite $nationalite): self
     {
-        $this->Relation = $Relation;
+        $this->nationalite = $nationalite;
 
         return $this;
     }
