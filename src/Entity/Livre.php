@@ -13,7 +13,14 @@ use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
 * @ORM\Entity(repositoryClass=LivreRepository::class)
-* @ApiResource() 
+* @ApiResource(
+*  attributes={
+*      "order"={
+*          "titre":"ASC",
+*          "prix":"ASC"
+*      }
+*  }
+* ) 
 */
 class Livre
 {

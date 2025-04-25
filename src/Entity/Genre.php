@@ -15,7 +15,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=GenreRepository::class)
- * @ApiResource()
+ * @ApiResource(
+ *  attributes={
+ *      "order"={"libelle":"ASC"}
+ *  }
+ * )
  * @UniqueEntity(
  *    fields={"libelle"},
  *    message="Ce genre existe déjà")
