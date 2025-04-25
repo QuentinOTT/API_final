@@ -6,6 +6,8 @@ use App\Entity\Livre;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\GenreRepository;
 use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,6 +15,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=GenreRepository::class)
+ * @ApiResource()
  * @UniqueEntity(
  *    fields={"libelle"},
  *    message="Ce genre existe déjà")
@@ -41,13 +44,14 @@ class Genre
 
     /**
      * @ORM\OneToMany(targetEntity=Livre::class, mappedBy="genre")
+     * @ApiSubresource()
      * @Groups({"listGenreFull"})
      */
-    private $editeur;
+    private $livres;
 
     public function __construct()
     {
-        $this->editeur = new ArrayCollection();
+        $this->livres = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -70,27 +74,27 @@ class Genre
     /**
      * @return Collection<int, Livre>
      */
-    public function getEditeur(): Collection
+    public function getlivres(): Collection
     {
-        return $this->editeur;
+        return $this->livres;
     }
 
-    public function addEditeur(Livre $editeur): self
+    public function addlivres(Livre $livres): self
     {
-        if (!$this->editeur->contains($editeur)) {
-            $this->editeur[] = $editeur;
-            $editeur->setGenre($this);
+        if (!$this->livres->contains($livres)) {
+            $this->livres[] = $livres;
+            $livres->setGenre($this);
         }
 
         return $this;
     }
 
-    public function removeEditeur(Livre $editeur): self
+    public function removelivres(Livre $livres): self
     {
-        if ($this->editeur->removeElement($editeur)) {
+        if ($this->livres->removeElement($livres)) {
             // set the owning side to null (unless already changed)
-            if ($editeur->getGenre() === $this) {
-                $editeur->setGenre(null);
+            if ($livres->getGenre() === $this) {
+                $livres->setGenre(null);
             }
         }
 
