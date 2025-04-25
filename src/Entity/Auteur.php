@@ -18,32 +18,27 @@ class Auteur
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"listAuteurFull", "listAuteurSimple"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"listGenreFull", "listAuteurFull", "listAuteurSimple"})
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"listGenreFull", "listAuteurFull", "listAuteurSimple"})
      */
     private $prenom;
 
     /**
      * @ORM\OneToMany(targetEntity=Livre::class, mappedBy="auteur")
-     * @Groups({"listAuteurFull"})
      */
     private $livres;
 
     /**
      * @ORM\ManyToOne(targetEntity=Nationalite::class)
      * @ORM\JoinColumn(nullable=true)
-     * @Groups({"listAuteurFull"})
      */
     private $nationalite;
 
