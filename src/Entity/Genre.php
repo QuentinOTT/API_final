@@ -15,7 +15,27 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=GenreRepository::class)
- * @ApiResource()
+ * @ApiResource(
+ *          itemOperations={
+ *              "get_simple"={
+ *                      method="GET",
+ *                      "path"="/genres/{id}/simple",
+ *                      "normalization_context"={
+ *                          "groups"={"listGenreSimple"}
+ *                      }
+ *              }
+ * },
+ *          collectionOperations={
+ *              "get_full"={
+ *                      method="GET",
+ *                      "path"="/genres/full",
+ *                      "normalization_context"={
+ *                          "groups"={"listGenreFull"}
+ *                      }
+ *              }
+ *          },
+ *          collectionOperations={"get"}
+ * )
  * @UniqueEntity(
  *    fields={"libelle"},
  *    message="Ce genre existe déjà")
@@ -32,7 +52,7 @@ class Genre
 
     /**
      * @ORM\Column(type="string", length=255)
-     * * @Groups({"listGenreSimple","listGenreFull"})
+     * @Groups({"listGenreSimple","listGenreFull"})
      * @Assert\Length(
      *     min=2,
      *     max=50,
