@@ -7,8 +7,10 @@ use App\Entity\Auteur;
 use App\Entity\Editeur;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\LivreRepository;
-use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 
 /**
@@ -21,7 +23,15 @@ use ApiPlatform\Core\Annotation\ApiResource;
 *      }
 *  }
 * ) 
+* @ApiFilter(
+*     SearchFilter::class,
+*     properties={
+*         "titre": "ipartial",
+*         "auteur": "exact"
+*     }
+* )
 */
+
 class Livre
 {
     /**
