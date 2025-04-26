@@ -43,7 +43,7 @@ class AppFixtures extends Fixture
             "78062", "78068", "78070", "78071", "78072", "78073", "78076", "78077", "78082", "78084", "78087",
             "78089", "78090", "78092", "78096", "78104", "78107", "78108", "78113", "78117", "78118"
         ];
-        for ($i = 0; $i < 25; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             $adherent = new Adherent();
             $adherent->setNom($this->faker->lastName);
             $adherent->setPrenom($this->faker->firstName($genre[mt_rand(0, 1)]));
@@ -60,6 +60,15 @@ class AppFixtures extends Fixture
             $adherent->setNom("Ott");
             $adherent->setPrenom("Quentin");
             $adherent->setMail("admin@gmail.com");
+            $adherent->setRoles([Adherent::ROLE_ADMIN]);
+            $adherent->setPassword($this->passwordEncoder->encodePassword($adherent, $adherent->getNom()));
+            $this->manager->persist($adherent);
+
+            $adherent = new Adherent();
+            $adherent->setNom("Durand");
+            $adherent->setPrenom("Sophie");
+            $adherent->setMail("manager@gmail.com");
+            $adherent->setRoles([Adherent::ROLE_MANAGER]);
             $adherent->setPassword($this->passwordEncoder->encodePassword($adherent, $adherent->getNom()));
             $this->manager->persist($adherent);
 

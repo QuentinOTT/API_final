@@ -19,6 +19,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class Adherent implements UserInterface
 {
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_MANAGER = 'ROLE_MANAGER';
+    const ROLE_ADHERENT = 'ROLE_ADHERENT';
+    const DEFAULT_ROLE = 'ROLE_ADHERENT';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -62,6 +67,11 @@ class Adherent implements UserInterface
     private $password;
 
     /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $roles;
+
+    /**
      * @ORM\OneToMany(targetEntity=Pret::class, mappedBy="Adherent")
      */
     private $prets;
@@ -69,6 +79,7 @@ class Adherent implements UserInterface
     public function __construct()
     {
         $this->prets = new ArrayCollection();
+        $this->roles = [self::DEFAULT_ROLE];
     }
 
     public function getId(): ?int
@@ -188,10 +199,21 @@ class Adherent implements UserInterface
         }
 
         return $this;
-    }
+    }           //affectes les roles de l'utilisateur
     public function getRoles(): array
     {
-        return ['ROLE_USER'];
+        $roles = $this->roles;
+        // Garantir que chaque utilisateur a au moins le rôle par défaut
+        $roles[] = self::DEFAULT_ROLE;
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 
     public function getSalt(): ?string

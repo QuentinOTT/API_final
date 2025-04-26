@@ -37,3 +37,7 @@ security:
     access_control:
         - { path: ^/apiplatform/login_check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/apiplatform, roles: IS_AUTHENTICATED_FULLY }
+
+    role_hierarchy:
+        role_manager: [role_adherent, role_manager]
+        role_admin: [role_manager, role_admin]
