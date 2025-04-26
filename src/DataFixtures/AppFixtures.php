@@ -4,21 +4,23 @@ namespace App\DataFixtures;
 
 use Faker\Factory;
 use App\Entity\Pret;
-use App\Entity\Adherent;
 use App\Entity\Livre;
+use App\Entity\Adherent;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
     private $manager;
     private $faker;
     private $repoLivre;
+    private $passwordEncoder;
 
-    public function __construct()
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->faker = Factory::create('fr_FR');
-
+        $this->passwordEncoder = $passwordEncoder;
     }
     
     public function load(ObjectManager $manager): void
@@ -49,7 +51,7 @@ class AppFixtures extends Fixture
             $adherent->setTelephone($this->faker->phoneNumber());
             $adherent->setCodeCommune($commune[mt_rand(0, sizeof($commune) - 1)]);
             $adherent->setMail($adherent->getNom()."@gmail.com");
-            $adherent->setPassword($adherent->getNom());
+            $adherent->setPassword($this->passwordEncoder->encodePassword($adherent, $adherent->getNom()));
             $this->addReference('adherent' . $i, $adherent);
             $this->manager->persist($adherent);
         }
@@ -58,7 +60,7 @@ class AppFixtures extends Fixture
             $adherent->setNom("Ott");
             $adherent->setPrenom("Quentin");
             $adherent->setMail("admin@gmail.com");
-            $adherent->setPassword("Ott");
+            $adherent->setPassword($this->passwordEncoder->encodePassword($adherent, $adherent->getNom()));
             $this->manager->persist($adherent);
 
 
