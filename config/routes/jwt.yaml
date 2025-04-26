@@ -1,0 +1,3 @@
+apiplatform_login_check:
+    path: /apiplatform/login_check
+    
