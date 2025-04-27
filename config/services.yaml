@@ -34,3 +34,21 @@ services:
         decorates: 'api_platform.serializer.context_builder'
         arguments: ['@App\Serializer\LivreContextBuilder.inner']
         autoconfigure: false
+
+    # Custom context builder for Pret entity
+    App\Serializer\PretContextBuilder:
+        decorates: 'api_platform.serializer.context_builder'
+        arguments: ['@App\Serializer\PretContextBuilder.inner']
+        autoconfigure: false
+
+    # Custom data provider for Pret entity
+    App\DataProvider\PretDataProvider:
+        arguments:
+            $security: '@security.helper'
+            $pretRepository: '@App\Repository\PretRepository'
+        tags: ['api_platform.data_provider']
+        
+    # Exception listener pour les prets
+    App\EventListener\PretExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }

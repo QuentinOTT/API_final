@@ -5,3 +5,7 @@ api_platform:
         json: ['application/merge-patch+json']
     swagger:
         versions: [3]
+    
+    # Configuration des routes avec le préfixe /apiplatform
+    defaults:
+        path_prefix: /apiplatform
