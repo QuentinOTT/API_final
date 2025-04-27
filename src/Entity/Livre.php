@@ -17,78 +17,134 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
-
 /**
-* @ORM\Entity(repositoryClass=LivreRepository::class)
-* @ApiResource(
-*  attributes={
-*      "order"={
-*          "titre":"ASC",
-*          "prix":"ASC"
-*      }
-*  },
-*  collectionOperations={
-*       "get"={
-*           "method"="GET"
-*       },
-*       "post"={
-*           "method"="POST"
-*       },
-*       "get_role_adherent"={
-*           "method"="GET",
-*           "path"="/adherents/livres",
-*           "security"="is_granted('ROLE_ADHERENT')",
-*           "normalization_context"={
-*               "groups"={"get_role_adherent"}
-*           },
-*           "defaults"={
-*               "_controller"="api_platform.action.get_collection"
-*           }
-*       }
-*   },
-*   itemOperations={
-*       "get"={
-*           "method"="GET"
-*       },
-*       "put"={
-*           "method"="PUT"
-*       },
-*       "delete"={
-*           "method"="DELETE"
-*       },
-*       "patch"={
-*           "method"="PATCH"
-*       }
-*   }
-* ) 
-* @ApiFilter(
-*     SearchFilter::class,
-*     properties={
-*         "titre": "ipartial",
-*         "auteur": "exact",
-*         "genre": "exact"
-*     }
-* )
-* @ApiFilter(
-*     OrderFilter::class,
-*     properties={
-*         "titre"="asc",
-*     }
-* )
-* @ApiFilter(
-*     PropertyFilter::class,
-*     arguments={
-*         "parameterName"="properties",
-*        "overrideDefaultProperties": false,
-*         "whitelist"={
-*                       "isbn",
-*                       "titre",
-*                       "prix"
-*                       }
-*     }
-* )
-*/
-
+ * @ORM\Entity(repositoryClass=LivreRepository::class)
+ * @ApiResource(
+ *     attributes={
+ *         "order"={
+ *             "titre": "ASC",
+ *             "prix": "ASC"
+ *         }
+ *     },
+ *     collectionOperations={
+ *         "get"={
+ *             "method"="GET"
+ *         },
+ *         "post"={
+ *             "method"="POST"
+ *         },
+ *         "get_role_adherent"={
+ *             "method"="GET",
+ *             "path"="/adherents/livres",
+ *             "security"="is_granted('ROLE_ADHERENT')",
+ *             "normalization_context"={
+ *                 "groups"={"get_role_adherent"}
+ *             },
+ *             "defaults"={
+ *                 "_controller"="api_platform.action.get_collection"
+ *             }
+ *         },
+ *         "get_role_manager"={
+ *             "method"="GET",
+ *             "path"="/manager/livres",
+ *             "security"="is_granted('ROLE_MANAGER')",
+ *             "security_message"="Vous n'avez pas accès à cette ressource",
+ *             "defaults"={
+ *                 "_controller"="api_platform.action.get_collection"
+ *             }
+ *         }
+ *     },
+ *     itemOperations={
+ *         "get"={
+ *             "method"="GET"
+ *         },
+ * 
+ *         "get_role_adherent"={
+ *             "method"="GET",
+ *             "path"="/adherents/livres/{id}",
+ *             "security"="is_granted('ROLE_ADHERENT')",
+ *             "normalization_context"={
+ *                 "groups"={"get_role_adherent"}
+ *             },
+ *             "defaults"={
+ *                 "_controller"="api_platform.action.get_collection"
+ *             }
+ *         },
+ * 
+ *         "get_role_manager"={
+ *             "method"="GET",
+ *             "path"="/manager/livres/{id}",
+ *             "security"="is_granted('ROLE_MANAGER')",
+ *             "security_message"="Vous n'avez pas accès à cette ressource",
+ *             "defaults"={
+ *                 "_controller"="api_platform.action.get_collection"
+ *             }
+ *         },
+ * 
+ *         "put_item_role_manager"={
+ *             "method"="PUT",
+ *             "path"="/manager/livres/{id}",
+ *             "security"="is_granted('ROLE_MANAGER')",
+ *             "security_message"="Vous n'avez pas accès à cette ressource",
+ *             "denormalization_context"={
+ *                 "groups"={"put_manager"}
+ *             },
+ *             "defaults"={
+ *                 "_controller"="api_platform.action.get_collection"
+ *             }
+ *         },
+ * 
+ *          "put_item_role_admin"={
+ *             "method"="PUT",
+ *             "path"="/admin/livres/{id}",
+ *             "security"="is_granted('ROLE_ADMIN')",
+ *             "security_message"="Vous n'avez pas accès à cette ressource",
+ *             "defaults"={
+ *                 "_controller"="api_platform.action.get_collection"
+ *             }
+ *         },
+ * 
+ *         "delete"={
+ *             "method"="DELETE",
+ *             "path"="/admin/livres/{id}",
+ *             "security"="is_granted('ROLE_ADMIN')",
+ *             "security_message"="Vous n'avez pas accès à cette ressource",
+ *             "defaults"={
+ *                 "_controller"="api_platform.action.delete"
+ *             }
+ *         },
+ *         "patch"={
+ *             "method"="PATCH"
+ *         }
+ *     }
+ * )
+ * @ApiFilter(
+ *     SearchFilter::class,
+ *     properties={
+ *         "titre": "ipartial",
+ *         "auteur": "exact",
+ *         "genre": "exact"
+ *     }
+ * )
+ * @ApiFilter(
+ *     OrderFilter::class,
+ *     properties={
+ *         "titre"="asc"
+ *     }
+ * )
+ * @ApiFilter(
+ *     PropertyFilter::class,
+ *     arguments={
+ *         "parameterName"="properties",
+ *         "overrideDefaultProperties": false,
+ *         "whitelist"={
+ *             "isbn",
+ *             "titre",
+ *             "prix"
+ *         }
+ *     }
+ * )
+ */
 class Livre
 {
     /**
@@ -100,13 +156,13 @@ class Livre
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get_role_adherent"})
+     * @Groups({"get_role_adherent", "put_manager"})
      */
     private $isbn;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get_role_adherent"})
+     * @Groups({"get_role_adherent", "put_manager"})
      */
     private $titre;
 
@@ -116,35 +172,34 @@ class Livre
     private $prix;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Genre::class, inversedBy="editeur")
-     * @Groups({"get_role_adherent"})
+     * @ORM\ManyToOne(targetEntity=Genre::class, inversedBy="livres")
+     * @Groups({"get_role_adherent", "put_manager"})
      */
     private $genre;
 
     /**
      * @ORM\ManyToOne(targetEntity=Editeur::class, inversedBy="livres")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"get_role_adherent"})
+     * @Groups({"get_role_adherent", "put_manager"})
      */
     private $editeur;
 
     /**
      * @ORM\ManyToOne(targetEntity=Auteur::class, inversedBy="livres")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"get_role_adherent"})
+     * @Groups({"get_role_adherent", "put_manager"})
      */
     private $auteur;
 
-
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"get_role_adherent"})
+     * @Groups({"get_role_adherent", "put_manager"})
      */
     private $annee;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get_role_adherent"})
+     * @Groups({"get_role_adherent", "put_manager"})
      */
     private $langue;
 
