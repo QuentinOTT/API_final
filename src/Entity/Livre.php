@@ -27,12 +27,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *         }
  *     },
  *     collectionOperations={
- *         "get"={
- *             "method"="GET"
- *         },
- *         "post"={
- *             "method"="POST"
- *         },
+ *
  *         "get_role_adherent"={
  *             "method"="GET",
  *             "path"="/adherents/livres",
@@ -55,9 +50,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *         }
  *     },
  *     itemOperations={
- *         "get"={
- *             "method"="GET"
- *         },
  * 
  *         "get_role_adherent"={
  *             "method"="GET",
