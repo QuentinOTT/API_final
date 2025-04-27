@@ -10,10 +10,48 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=AdherentRepository::class)
- * @ApiResource()
+ * @ApiResource(
+ *     collectionOperations={
+ *         "get"={
+ *             "method"="GET",
+ *             "path"="/adherents",
+ *             "security"="is_granted('ROLE_MANAGER')",
+ *             "security_message"="Seuls les managers peuvent voir la liste des adhérents"
+ *         },
+ *         "post"={
+ *             "method"="POST",
+ *             "path"="/adherents",
+ *             "security"="is_granted('ROLE_MANAGER')",
+ *             "security_message"="Seuls les managers peuvent créer des adhérents",
+ *             "denormalization_context"={
+ *                 "groups"={"post_manager"}
+ *             },
+ *             "controller"="App\Controller\AdherentController::createAdherent"
+ *         }
+ *     },
+ *     itemOperations={
+ *         "get"={
+ *             "method"="GET",
+ *             "path"="/adherents/{id}",
+ *             "controller"="App\Controller\AdherentController::getAdherent"
+ *         },
+ *         "put"={
+ *             "method"="PUT",
+ *             "path"="/adherents/{id}",
+ *             "controller"="App\Controller\AdherentController::updateAdherent"
+ *         },
+ *         "delete"={
+ *             "method"="DELETE",
+ *             "path"="/adherents/{id}",
+ *             "security"="is_granted('ROLE_ADMIN')",
+ *             "security_message"="Seuls les administrateurs peuvent supprimer un adhérent"
+ *         }
+ *     }
+ * )
  * @UniqueEntity(
  *    fields={"mail"},
  *    message="Ce mail existe déjà")
@@ -29,46 +67,55 @@ class Adherent implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"get_role_manager", "get_role_admin"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"get_role_adherent", "get_role_manager", "get_role_admin", "post_manager"})
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"get_role_adherent", "get_role_manager", "get_role_admin", "post_manager"})
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"get_role_adherent", "get_role_manager", "get_role_admin", "post_manager"})
      */
     private $adresse;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"get_role_adherent", "get_role_manager", "get_role_admin", "post_manager"})
      */
     private $codeCommune;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"get_role_adherent", "get_role_manager", "get_role_admin", "post_manager"})
      */
     private $mail;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"get_role_adherent", "get_role_manager", "get_role_admin", "post_manager"})
      */
     private $telephone;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"get_role_admin", "post_manager"})
      */
     private $password;
 
     /**
      * @ORM\Column(type="json", nullable=true)
+     * @Groups({"get_role_manager", "get_role_admin"})
      */
     private $roles;
 

@@ -48,6 +48,22 @@ services:
             $pretRepository: '@App\Repository\PretRepository'
         tags: ['api_platform.data_provider']
         
+    # Custom context builder for Adherent entity
+    App\Serializer\AdherentContextBuilder:
+        decorates: 'api_platform.serializer.context_builder'
+        arguments: 
+            - '@App\Serializer\AdherentContextBuilder.inner'
+            - '@security.authorization_checker'
+            - '@security.helper'
+        autoconfigure: false
+
+    # Custom data provider for Adherent entity
+    App\DataProvider\AdherentDataProvider:
+        arguments:
+            $security: '@security.helper'
+            $adherentRepository: '@App\Repository\AdherentRepository'
+        tags: ['api_platform.data_provider']
+        
     # Exception listener pour les prets
     App\EventListener\PretExceptionListener:
         tags:
