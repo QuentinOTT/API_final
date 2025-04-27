@@ -31,7 +31,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *         "get_role_adherent"={
  *             "method"="GET",
  *             "path"="/adherents/livres",
- *             "security"="is_granted('ROLE_ADHERENT')",
  *             "normalization_context"={
  *                 "groups"={"get_role_adherent"}
  *             },
@@ -39,6 +38,15 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *                 "_controller"="api_platform.action.get_collection"
  *             }
  *         },
+ *         "post_role_manager"={
+ *             "method"="POST",
+ *             "security"="is_granted('ROLE_MANAGER')",
+ *             "security_message"="Vous n'avez pas accès à cette ressource",
+ *             "defaults"={
+ *                 "_controller"="api_platform.action.post"
+ *             }
+ *         },
+ * 
  *         "get_role_manager"={
  *             "method"="GET",
  *             "path"="/manager/livres",
@@ -160,6 +168,7 @@ class Livre
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"get_role_manager"})
      */
     private $prix;
 
@@ -197,6 +206,7 @@ class Livre
 
     /**
      * @ORM\OneToMany(targetEntity=Pret::class, mappedBy="livre")
+     * @Groups({"get_role_manager"})
      */
     private $prets;
 
