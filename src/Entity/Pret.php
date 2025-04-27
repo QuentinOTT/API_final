@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\PretRepository;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\PretRepository;
 use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -44,11 +44,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *         "delete"={
  *             "method"="DELETE",
  *             "path"="/prets/{id}",
- *             "security"="is_granted('ROLE_ADMIN')",
- *             "security_message"="Seuls les administrateurs peuvent supprimer un prêt"
+ *             "security"="is_granted('ROLE_MANAGER')",
+ *             "security_message"="Seuls les managers peuvent supprimer un prêt"
  *         }
  *     }
  * )
+ * @ORM\HasLifecycleCallbacks
  */
 class Pret
 {
@@ -165,4 +166,5 @@ class Pret
 
         return $this;
     }
+
 }
