@@ -1,30 +1,46 @@
+# Configuration de sécurité pour l'application Symfony
 security:
-    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    # Configuration des encodeurs de mot de passe pour chaque entité
     encoders:
         App\Entity\Adherent:
-            algorithm: bcrypt
+            algorithm: bcrypt  # Utilisation de l'algorithme bcrypt pour le hachage des mots de passe
+    
+    # Configuration des fournisseurs d'utilisateurs
     providers:
         in_database:
             entity:
-                class: App\Entity\Adherent
-                property: mail 
+                class: App\Entity\Adherent  # Entité utilisée pour l'authentification
+                property: mail  # Propriété utilisée comme identifiant unique
+    
+    # Configuration des pare-feux (firewalls)
     firewalls:
+        # Pare-feu pour les outils de développement (profiler, debug toolbar)
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
+            security: false  # Désactive la sécurité pour ces routes
+        
+        # Pare-feu pour l'API
         api:
-            pattern: ^/apiplatform
-            stateless: true
-            anonymous: true
+            pattern: ^/apiplatform  # S'applique à toutes les routes commençant par /apiplatform
+            stateless: true  # Mode sans état (pas de session)
+            anonymous: true  # Autorise les accès anonymes (sera filtré par access_control)
+            
+            # Configuration de l'authentification par JSON
             json_login:
-                username_path: mail
-                check_path: /apiplatform/login_check
-                success_handler: lexik_jwt_authentication.handler.authentication_success
-                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+                username_path: mail  # Champ utilisé comme identifiant dans la requête JSON
+                check_path: /apiplatform/login_check  # Route pour l'authentification
+                success_handler: lexik_jwt_authentication.handler.authentication_success  # Gestionnaire de succès (renvoie le token JWT)
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure  # Gestionnaire d'échec
+            
+            # Configuration du garde d'authentification JWT
             guard:
                 authenticators: 
-                    - lexik_jwt_authentication.jwt_token_authenticator
+                    - lexik_jwt_authentication.jwt_token_authenticator  # Authentificateur JWT qui vérifie les tokens
             
+            # Configuration de la déconnexion
+            logout:
+                path: /logout  # Route pour la déconnexion
+                invalidate_session: false  # Ne pas invalider la session (car mode stateless)
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -32,12 +48,19 @@ security:
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
 
-    # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
+    # Configuration du contrôle d'accès pour différentes sections de l'application
+    # Note: Seul le *premier* contrôle d'accès qui correspond sera utilisé
     access_control:
+        # Permet l'accès anonyme à la route d'authentification JWT
         - { path: ^/apiplatform/login_check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # Permet l'accès anonyme à la racine de l'API (page d'accueil API Platform)
+        - { path: ^/apiplatform$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # Exige une authentification complète pour toutes les autres routes de l'API
         - { path: ^/apiplatform, roles: IS_AUTHENTICATED_FULLY }
 
+    # Hiérarchie des rôles : définit l'héritage des rôles
     role_hierarchy:
-        role_manager: [role_adherent, role_manager]
-        role_admin: [role_manager, role_admin]
+        # Un utilisateur avec ROLE_MANAGER hérite automatiquement de ROLE_ADHERENT
+        ROLE_MANAGER: ROLE_ADHERENT
+        # Un utilisateur avec ROLE_ADMIN hérite automatiquement de ROLE_MANAGER et ROLE_ADHERENT
+        ROLE_ADMIN: [ROLE_MANAGER, ROLE_ADHERENT]

@@ -26,27 +26,53 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 *          "titre":"ASC",
 *          "prix":"ASC"
 *      }
-*  }
+*  },
+*  collectionOperations={
+*       "get"={
+*           "method"="GET"
+*       },
+*       "post"={
+*           "method"="POST"
+*       },
+*       "get_role_adherent"={
+*           "method"="GET",
+*           "path"="/adherents/livres",
+*           "security"="is_granted('ROLE_ADHERENT')",
+*           "normalization_context"={
+*               "groups"={"get_role_adherent"}
+*           },
+*           "defaults"={
+*               "_controller"="api_platform.action.get_collection"
+*           }
+*       }
+*   },
+*   itemOperations={
+*       "get"={
+*           "method"="GET"
+*       },
+*       "put"={
+*           "method"="PUT"
+*       },
+*       "delete"={
+*           "method"="DELETE"
+*       },
+*       "patch"={
+*           "method"="PATCH"
+*       }
+*   }
 * ) 
 * @ApiFilter(
 *     SearchFilter::class,
 *     properties={
 *         "titre": "ipartial",
-*         "auteur": "exact"
-*     }
-* )
-* @ApiFilter(
-*     RangeFilter::class,
-*     properties={
-*         "prix"
+*         "auteur": "exact",
+*         "genre": "exact"
 *     }
 * )
 * @ApiFilter(
 *     OrderFilter::class,
 *     properties={
 *         "titre"="asc",
-*         "prix",
-*         "auteur.nom"="desc"
 *     }
 * )
 * @ApiFilter(
@@ -74,6 +100,13 @@ class Livre
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"get_role_adherent"})
+     */
+    private $isbn;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"get_role_adherent"})
      */
     private $titre;
 
@@ -84,33 +117,34 @@ class Livre
 
     /**
      * @ORM\ManyToOne(targetEntity=Genre::class, inversedBy="editeur")
+     * @Groups({"get_role_adherent"})
      */
     private $genre;
 
     /**
      * @ORM\ManyToOne(targetEntity=Editeur::class, inversedBy="livres")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"get_role_adherent"})
      */
     private $editeur;
 
     /**
      * @ORM\ManyToOne(targetEntity=Auteur::class, inversedBy="livres")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"get_role_adherent"})
      */
     private $auteur;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $isbn;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"get_role_adherent"})
      */
     private $annee;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"get_role_adherent"})
      */
     private $langue;
 

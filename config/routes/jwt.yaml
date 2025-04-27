@@ -1,3 +1,9 @@
-apiplatform_login_check:
+# Configuration de la route d'authentification JWT
+api_login_check:
+    # Chemin URL pour l'authentification (doit correspondre au check_path dans security.yaml)
     path: /apiplatform/login_check
-    
+    # Méthode HTTP autorisée (POST pour l'envoi des identifiants)
+    methods: ['POST']
+    # Configuration du contrôleur qui génère le token JWT
+    defaults:
+        _controller: 'lexik_jwt_authentication.controller:getTokenAction'

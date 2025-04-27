@@ -1,5 +1,21 @@
+# Configuration du bundle LexikJWTAuthenticationBundle pour l'authentification JWT
 lexik_jwt_authentication:
+    # Chemin vers la clé privée utilisée pour signer les tokens JWT
     secret_key: '%env(resolve:JWT_SECRET_KEY)%'
+    # Chemin vers la clé publique utilisée pour vérifier les tokens JWT
     public_key: '%env(resolve:JWT_PUBLIC_KEY)%'
+    # Phrase secrète utilisée pour chiffrer/déchiffrer les clés
     pass_phrase: '%env(JWT_PASSPHRASE)%'
+    # Durée de validité du token en secondes (1 heure)
     token_ttl: 3600
+    # Champ utilisé comme identifiant utilisateur (email dans notre cas)
+    user_identity_field: mail
+    # Configuration spécifique pour l'intégration avec API Platform
+    api_platform:
+        # Chemin pour la vérification du token (doit correspondre à la route définie dans jwt.yaml)
+        check_path: /apiplatform/login_check
+        # Champ utilisé comme nom d'utilisateur dans la requête d'authentification
+        username_path: mail
+        # Champ utilisé comme mot de passe dans la requête d'authentification
+        password_path: password
+
