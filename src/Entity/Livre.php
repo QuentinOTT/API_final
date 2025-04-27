@@ -28,9 +28,9 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *     },
  *     collectionOperations={
  *
- *         "get_role_adherent"={
+ *         "get"={
  *             "method"="GET",
- *             "path"="/adherents/livres",
+ *             "path"="/livres",
  *             "normalization_context"={
  *                 "groups"={"get_role_adherent"}
  *             },
@@ -38,7 +38,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *                 "_controller"="api_platform.action.get_collection"
  *             }
  *         },
- *         "post_role_manager"={
+ *         "post_coll_role_manager"={
  *             "method"="POST",
  *             "security"="is_granted('ROLE_MANAGER')",
  *             "security_message"="Vous n'avez pas accès à cette ressource",
@@ -47,7 +47,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *             }
  *         },
  * 
- *         "get_role_manager"={
+ *         "get_coll_role_manager"={
  *             "method"="GET",
  *             "path"="/manager/livres",
  *             "security"="is_granted('ROLE_MANAGER')",
@@ -59,10 +59,9 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *     },
  *     itemOperations={
  * 
- *         "get_role_adherent"={
+ *         "get"={
  *             "method"="GET",
- *             "path"="/adherents/livres/{id}",
- *             "security"="is_granted('ROLE_ADHERENT')",
+ *             "path"="/livres/{id}",
  *             "normalization_context"={
  *                 "groups"={"get_role_adherent"}
  *             },
@@ -71,19 +70,9 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *             }
  *         },
  * 
- *         "get_role_manager"={
- *             "method"="GET",
- *             "path"="/manager/livres/{id}",
- *             "security"="is_granted('ROLE_MANAGER')",
- *             "security_message"="Vous n'avez pas accès à cette ressource",
- *             "defaults"={
- *                 "_controller"="api_platform.action.get_collection"
- *             }
- *         },
- * 
- *         "put_item_role_manager"={
+ *         "put"={
  *             "method"="PUT",
- *             "path"="/manager/livres/{id}",
+ *             "path"="/livres/{id}",
  *             "security"="is_granted('ROLE_MANAGER')",
  *             "security_message"="Vous n'avez pas accès à cette ressource",
  *             "denormalization_context"={
@@ -94,19 +83,10 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *             }
  *         },
  * 
- *          "put_item_role_admin"={
- *             "method"="PUT",
- *             "path"="/admin/livres/{id}",
- *             "security"="is_granted('ROLE_ADMIN')",
- *             "security_message"="Vous n'avez pas accès à cette ressource",
- *             "defaults"={
- *                 "_controller"="api_platform.action.get_collection"
- *             }
- *         },
  * 
  *         "delete"={
  *             "method"="DELETE",
- *             "path"="/admin/livres/{id}",
+ *             "path"="/livres/{id}",
  *             "security"="is_granted('ROLE_ADMIN')",
  *             "security_message"="Vous n'avez pas accès à cette ressource",
  *             "defaults"={
@@ -168,7 +148,7 @@ class Livre
 
     /**
      * @ORM\Column(type="float", nullable=true)
-     * @Groups({"get_role_manager"})
+     * @Groups({"get_role_manager","put_admin"})
      */
     private $prix;
 

@@ -29,7 +29,8 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    'app\serializer\bookContextBuilder':
-        decirates: 'api_platform.serializer.context_builder'
-        arguments: ['@App\Serializer\BookContextBuilder.inner']
+    # Custom context builder for Livre entity
+    App\Serializer\LivreContextBuilder:
+        decorates: 'api_platform.serializer.context_builder'
+        arguments: ['@App\Serializer\LivreContextBuilder.inner']
         autoconfigure: false
