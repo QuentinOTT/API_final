@@ -47,6 +47,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *             }
  *         },
  * 
+ *         "meilleurslivres"={
+ *             "method"="GET",
+ *             "path"="meilleurslivres",
+ *             "controller"=StatsController::class
+ *         },
+ * 
  *         "get_coll_role_manager"={
  *             "method"="GET",
  *             "path"="/manager/livres",

@@ -18,6 +18,20 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class LivreRepository extends ServiceEntityRepository
 {
+    /**
+     * Retourne les 5 livres les plus empruntés
+     * @return void Tableau contenant les livres et leur nombre d'emprunts
+     */
+    public function TrouveMeilleursLivres()
+    {
+        $query = $this->createQueryBuilder('l')
+            ->select('l as livre, count(p.id) as nbprets')
+            ->join('l.prets', 'p')
+            ->groupBy('l')
+            ->orderBy('nbprets', 'DESC')
+            ->setMaxResults(5);
+        return $query->getQuery()->getResult();
+    }
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Livre::class);

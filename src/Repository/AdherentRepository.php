@@ -24,6 +24,20 @@ class AdherentRepository extends ServiceEntityRepository
     }
 
     /**
+     * Retourne la liste des adhérents avec le nombre de prêts
+     * @return void
+    */
+        public function nbPretsParAdherent()
+        {
+            $query = $this->createQueryBuilder('a')
+                ->select('a.id,a.nom,a.prenom,COUNT(p.id) as nbPrets')
+                ->leftJoin('a.prets', 'p')
+                ->groupBy('a')
+                ->orderBy('nbPrets', 'DESC');
+            return $query->getQuery()->getResult();
+        }
+
+    /**
      * @throws ORMException
      * @throws OptimisticLockException
      */

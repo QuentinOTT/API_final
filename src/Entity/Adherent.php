@@ -31,6 +31,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *                 "groups"={"post_manager"}
  *             },
  *             "controller"="App\Controller\AdherentController::createAdherent"
+ *         },
+ *         "statNbPretsParAdherent"={
+ *             "method"="GET",
+ *             "route_name"="adherent_nbPrets",
+ *             "path"="/adherents/nbPretsParAdherent",
+ *             "controller"=StatsController::class
  *         }
  *     },
  *     itemOperations={
@@ -38,6 +44,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *             "method"="GET",
  *             "path"="/adherents/{id}",
  *             "controller"="App\Controller\AdherentController::getAdherent"
+ *         },
+ *         "getNbPrets"={
+ *             "method"="GET",
+ *             "route_name"="adherent_prets_count",
  *         },
  *         "put"={
  *             "method"="PUT",
